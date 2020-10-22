@@ -1,20 +1,3 @@
-input.onButtonPressed(Button.A, function () {
-    if (stemmeUrneÅpen == true) {
-        radio.sendString("ja")
-        stemmeUrneÅpen = false
-        mhm_ok("J")
-        basic.showLeds(`
-            . . # . .
-            . . # . .
-            . . # . .
-            . . . . .
-            . . # . .
-            `)
-    }
-})
-function mhm_ok (text: string) {
-    list.push(text)
-}
 /**
  * Dette er programmet til mentometer-senderen!
  * 
@@ -30,6 +13,24 @@ function mhm_ok (text: string) {
  * 
  * ... og noen ser ut til å ha programmert inn en sårbarhet i stemmegivningen.
  */
+input.onButtonPressed(Button.A, function () {
+    if (stemmeUrneÅpen == true) {
+        radio.sendString("ja")
+        stemmeUrneÅpen = false
+        mhm_ok("J")
+        basic.showLeds(`
+            . . # . .
+            . . # . .
+            . . # . .
+            . . . . .
+            . . # . .
+            `)
+    }
+})
+// Oj, hva er dette? Driver noen og SPIONERER på svarene dine og lagrer informasjonen din uten at du vet det?
+function mhm_ok (text: string) {
+    list.push(text)
+}
 radio.onReceivedString(function (receivedString) {
     if (receivedString == "start") {
         stemmeUrneÅpen = true
@@ -44,8 +45,8 @@ radio.onReceivedString(function (receivedString) {
             . . # . .
             `)
         mhm_ok("?")
-    } else if (receivedString == "hack") {
-        hack()
+    } else if (receivedString == "oops") {
+        oops()
     }
 })
 input.onButtonPressed(Button.B, function () {
@@ -62,7 +63,8 @@ input.onButtonPressed(Button.B, function () {
             `)
     }
 })
-function hack () {
+// Ojsann. Oops. Vi programmerte visst inn en bakdør som tvinger micro:biten til å fortelle hva du svarte på alle spørsmålene. Bra du fant den i tide... eller?
+function oops () {
     for (let index = 0; index <= list.length - 1; index++) {
         basic.showString("" + convertToText(index + 1) + "=" + list[index])
         basic.clearScreen()
